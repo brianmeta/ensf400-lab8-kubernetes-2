@@ -1,0 +1,22 @@
+# Name: Brian Meta
+# UCID: 30142390
+# Course: ENSF 400
+# Section: L01, B01
+# Assignment 3
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configmap
+data:
+  nginx.cfg: |
+    upstream backend {
+      server app-1:8080;
+      server app-2:8080;
+    }
+
+    server {
+        location / {
+            proxy_pass http://backend;
+        }
+    }

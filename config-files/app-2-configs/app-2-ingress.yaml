@@ -1,0 +1,25 @@
+# Name: Brian Meta
+# UCID: 30142390
+# Course: ENSF 400
+# Section: L01, B01
+# Assignment 3
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-2-ingress
+  label:
+    app: app-2-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-weight: "30"
+spec:
+  rules:
+    http:
+      paths:
+      - path: /app
+        backend:
+          service:
+            name: app-2-svc
+            port:
+              number: 31000

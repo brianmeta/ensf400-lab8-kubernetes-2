@@ -1,0 +1,20 @@
+# Name: Brian Meta
+# UCID: 30142390
+# Course: ENSF 400
+# Section: L01, B01
+# Assignment 3
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+  labels:
+    app: nginx-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080

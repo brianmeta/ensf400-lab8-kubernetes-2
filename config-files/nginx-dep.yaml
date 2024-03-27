@@ -1,0 +1,39 @@
+# Name: Brian Meta
+# UCID: 30142390
+# Course: ENSF 400
+# Section: L01, B01
+# Assignment 3
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-dep       
+  labels:               
+    app: nginx
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: nginx
+  template:       
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: nginx-loadbalancer-config
+              mountPath: # TODO
+              readOnly: true
+          # Use this to copy file in mount path to the default directory
+          command: [""]
+          args: ["", ""]
+
+      volumes:
+        - name: nginx-loadbalancer-config
+          configMap:
+            name: nginx-configmap
