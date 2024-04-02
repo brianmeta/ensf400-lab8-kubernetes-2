@@ -9,7 +9,7 @@ kind: Deployment
 metadata:
   name: nginx-dep       
   labels:               
-    app: nginx
+    dep: nginx
 spec:
   replicas: 5
   selector:
@@ -27,12 +27,7 @@ spec:
             - containerPort: 8080
           volumeMounts:
             - name: nginx-loadbalancer-config
-              mountPath: # TODO
-              readOnly: true
-          # Use this to copy file in mount path to the default directory
-          command: [""]
-          args: ["", ""]
-
+              mountPath: /etc/nginx/sites-available/nginx.cfg
       volumes:
         - name: nginx-loadbalancer-config
           configMap:
