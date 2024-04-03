@@ -10,10 +10,16 @@
 
 In this README I will outline the steps that were taken to show the correct output of the assignment.
 
-> Note: All commands for each step were run in the default working >directory provided by the code space.
->
+> Notes: 
+> 
+> All commands for each step were run in the default working >directory provided by the code space.
 > This is exactly how my terminal looked:  
 > @brianmeta ➜ /workspaces/ensf400-lab8-kubernetes-2 (main) $
+>
+>
+> Also, Dr. Drew confirmed that it is okay if the ingress for each app has a path of / instead of /app.
+
+# FIXME: Redue the steps for completing the assignment!!!
 
 ## **_Step 1_** - Setup
 

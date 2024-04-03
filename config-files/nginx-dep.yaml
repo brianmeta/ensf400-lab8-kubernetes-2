@@ -24,9 +24,10 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
-            - name: nginx-loadbalancer-config
+            - name: nginx-loadbalancer
               mountPath: /etc/nginx/conf.d
+              readOnly: true
       volumes:
-        - name: nginx-loadbalancer-config
+        - name: nginx-loadbalancer
           configMap:
             name: nginx-configmap
