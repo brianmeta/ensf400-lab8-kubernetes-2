@@ -25,8 +25,12 @@ spec:
             - containerPort: 80
           volumeMounts:
             - name: nginx-loadbalancer-config
-              mountPath: /etc/nginx/conf.d/
+              mountPath: /etc/nginx/conf.d
+              readOnly: "true"
       volumes:
         - name: nginx-loadbalancer-config
           configMap:
             name: nginx-configmap
+            items:
+              - key: nginx.cfg        # Data key in the config map
+                path: default.conf    # ConfigMap data will be mounted at mountPath/path

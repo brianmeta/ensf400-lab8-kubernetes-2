@@ -10,13 +10,13 @@ metadata:
   name: nginx-configmap
 data:
   nginx.cfg: |
-  upstream backend {
-      server app-1:8080;
-      server app-2:8080;
-  }
+    upstream backend {
+        server app-1:8080;
+        server app-2:8080;
+    }
 
-  server {
-      location / {
-          proxy_pass http://backend;
-      }
-  }
+    server {
+        location / {
+            proxy_pass http://backend;
+        }
+    }
