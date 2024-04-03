@@ -10,8 +10,8 @@ metadata:
   name: app-1-svc
 spec:
   selector:
-    name: app-1
+    app: app-1
   ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 80
+    - protocol: TCP
+      port: 8080
+      targetPort: 3000

@@ -9,7 +9,7 @@ kind: Ingress
 metadata:
   name: nginx-ingress
   annotations:
-    ingressclass.kubernetes.io/is-default-class: "true"
+    ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:

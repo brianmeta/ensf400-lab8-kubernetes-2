@@ -54,7 +54,14 @@ You can view the list of minikube maintainers at: https://github.com/kubernetes/
 
 Now that the code space has been setup, we are ready to create the resources required to create the Nginx LoadBalancer using the config files.
 
-To begin, I created the deployment using the command:
+To begin, I created the config map using the command:
+
+```bash
+$ kubectl create -f ./config-files/nginx-configmap.yaml
+configmap/nginx-configmap created
+```
+
+Afterwards, I created the deployment resource using the command:
 
 ```bash
 $ kubectl create -f ./config-files/nginx-dep.yaml
@@ -136,6 +143,9 @@ Now that all of the resources have been created, I used the command below to che
 Now that the assignment has been completed, I deleted all the resources using the commands below.
 
 ```bash
+$ kubectl delete -f ./config-files/nginx-configmap.yaml
+configmap "nginx-configmap" deleted
+
 $ kubectl delete -f ./config-files/nginx-dep.yaml
 deployment.apps "nginx-dep" deleted
 

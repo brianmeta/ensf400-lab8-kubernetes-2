@@ -9,9 +9,7 @@ kind: Ingress
 metadata:
   name: app-1-ingress
   annotations:
-    nginx.ingress.kubernetes.io/canary: "true"
-    nginx.ingress.kubernetes.io/canary-weight: "70"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
@@ -22,4 +20,4 @@ spec:
           service:
             name: app-1-svc
             port:
-              number: 80
+              number: 8080
