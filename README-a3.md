@@ -10,16 +10,10 @@
 
 In this README I will outline the steps that were taken to show the correct output of the assignment.
 
-> Notes: 
-> 
-> All commands for each step were run in the default working >directory provided by the code space.
+> Notes: All commands for each step were run in the default working directory provided by the code space.
+>
 > This is exactly how my terminal looked:  
 > @brianmeta ➜ /workspaces/ensf400-lab8-kubernetes-2 (main) $
->
->
-> Also, Dr. Drew confirmed that it is okay if the ingress for each app has a path of / instead of /app.
-
-# FIXME: Redue the steps for completing the assignment!!!
 
 ## **_Step 1_** - Setup
 
@@ -27,11 +21,6 @@ Immediately after entering the code space, I first started the minikube with the
 
 ```bash
 $ minikube start
-```
-
-**Output**
-
-```
 😄 minikube v1.32.0 on Ubuntu 20.04 (docker/amd64)
 ✨ Using the docker driver based on existing profile
 👍 Starting control plane node minikube in cluster minikube
@@ -42,11 +31,6 @@ I then enabled ingress add-on using the command:
 
 ```bash
 $ minikube addons enable ingress
-```
-
-**Output**
-
-```
 💡  ingress is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
 You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS
     ▪ Using image registry.k8s.io/ingress-nginx/controller:v1.9.4
@@ -56,25 +40,61 @@ You can view the list of minikube maintainers at: https://github.com/kubernetes/
 🌟  The 'ingress' addon is enabled
 ```
 
-## **_Step 2_** - Create resources for Nginx LoadBalancers
+## **_Step 2_** - Create App Resources
 
-Now that the code space has been setup, we are ready to create the resources required to create the Nginx LoadBalancer using the config files.
+Now that the code space has been setup, I started to create the resources for each app. To avoid errors when creating these resources, I first created the deployment, then service, and lastly ingress.
 
-To begin, I created the config map using the command:
+Hence, all the resources for app-1 were created by executing the commands below in the same order:
+
+1. ```bash
+   $ kubectl create -f app-1-dep.yaml
+   deployment.apps/app-1 created
+   ```
+
+1. ```bash
+   $ kubectl create -f app-1-svc.yaml
+   service/app-1-svc created
+   ```
+
+1. ```bash
+   $ kubectl create -f app-1-ingress.yaml
+   ingress.networking.k8s.io/app-1-ingress created
+   ```
+
+I then did the same for app-2 in the same order:
+
+1. ```bash
+   $ kubectl create -f app-2-dep.yaml
+   deployment.apps/app-2 created
+   ```
+
+1. ```bash
+   $ kubectl create -f app-2-svc.yaml
+   service/app-2-svc created
+   ```
+
+1. ```bash
+   $ kubectl create -f app-2-ingress.yaml
+   ingress.networking.k8s.io/app-2-ingress created
+   ```
+
+## **_Step 3_** - Create Nginx LoadBalancers
+
+After creating the app resources, I created the configmap (which will be used by the Nginx loadbalancer pods) using the command:
 
 ```bash
-$ kubectl create -f ./config-files/nginx-configmap.yaml
+$ kubectl create -f nginx-configmap.yaml
 configmap/nginx-configmap created
 ```
 
-Afterwards, I created the deployment resource using the command:
+Afterwards, I created the Nginx deployment resource using the command:
 
 ```bash
-$ kubectl create -f ./config-files/nginx-dep.yaml
+$ kubectl create -f nginx-dep.yaml
 deployment.apps/nginx-dep created
 ```
 
-To check that all 5 pods are running, you can then use the command:
+I then used the command below to check that all 5 pods are running:
 
 ```bash
 $ kubectl get po
@@ -86,53 +106,17 @@ nginx-dep-86b95db777-x8v88   1/1     Running   0          19s
 nginx-dep-86b95db777-z8c8z   1/1     Running   0          19s
 ```
 
-I then created the service and ingress using the following commands (in the same order):
+Finally, I created the service and ingress resources using the following commands (in the same order):
 
 ```bash
-$ kubectl create -f ./config-files/nginx-svc.yaml
+$ kubectl create -f nginx-svc.yaml
 service/nginx-svc created
 ```
 
 ```bash
-$ kubectl create -f ./config-files/nginx-ingress.yaml
+$ kubectl create -f nginx-ingress.yaml
 ingress.networking.k8s.io/nginx-ingress created
 ```
-
-## **_Step 3_** - Create resources for Apps
-
-I first created all the resources for app-1, by executing the commands below in the same order.
-
-1. ```bash
-   $ kubectl create -f ./config-files/app-1-configs/app-1-dep.yaml
-   deployment.apps/app-1 created
-   ```
-
-1. ```bash
-   $ kubectl create -f ./config-files/app-1-configs/app-1-svc.yaml
-   service/app-1-svc created
-   ```
-
-1. ```bash
-   $ kubectl create -f ./config-files/app-1-configs/app-1-ingress.yaml
-   ingress.networking.k8s.io/app-1-ingress created
-   ```
-
-I then did the same for app-2, by executing the commands in below in the same order.
-
-1. ```bash
-   $ kubectl create -f ./config-files/app-2-configs/app-2-dep.yaml
-   deployment.apps/app-2 created
-   ```
-
-1. ```bash
-   $ kubectl create -f ./config-files/app-2-configs/app-2-svc.yaml
-   service/app-2-svc created
-   ```
-
-1. ```bash
-   $ kubectl create -f ./config-files/app-2-configs/app-2-ingress.yaml
-   ingress.networking.k8s.io/app-2-ingress created
-   ```
 
 ## **_Step 4_** - Results
 
@@ -144,39 +128,42 @@ Now that all of the resources have been created, I used the command below to che
 
 ### FIXME: SCREENSHOT RESULTS GO HERE
 
+FIXME Note: Talk about how you see way more app1 then app2 since app2 is a canary with 30% traffic.
+
 ## **_Step 5_** - Clean Up
 
-Now that the assignment has been completed, I deleted all the resources using the commands below.
+After completing the assignment, I deleted all the resources using the commands below in the same order:
 
 ```bash
-$ kubectl delete -f ./config-files/nginx-configmap.yaml
-configmap "nginx-configmap" deleted
-
-$ kubectl delete -f ./config-files/nginx-dep.yaml
-deployment.apps "nginx-dep" deleted
-
-$ kubectl delete -f ./config-files/nginx-svc.yaml
-service "nginx-svc" deleted
-
-$ kubectl delete -f ./config-files/nginx-ingress.yaml
+$ kubectl delete -f nginx-ingress.yaml
 ingress.networking.k8s.io "nginx-ingress" deleted
 
-$ kubectl delete -f ./config-files/app-2-configs/app-2-ingress.yaml
+$ kubectl delete -f nginx-svc.yaml
+service "nginx-svc" deleted
+
+$ kubectl delete -f nginx-dep.yaml
+deployment.apps "nginx-dep" deleted
+
+$ kubectl delete -f nginx-configmap.yaml
+configmap "nginx-configmap" deleted
+
+$ kubectl delete -f app-2-ingress.yaml
 ingress.networking.k8s.io "app-2-ingress" deleted
 
-$ kubectl delete -f ./config-files/app-2-configs/app-2-svc.yaml
+$ kubectl delete -f app-2-svc.yaml
 service "app-2-svc" deleted
 
-$ kubectl delete -f ./config-files/app-2-configs/app-2-dep.yaml
+$ kubectl delete -f app-2-dep.yaml
 deployment.apps "app-2" deleted
 
-$ kubectl delete -f ./config-files/app-1-configs/app-1-ingress.yaml
+$ kubectl delete -f app-1-ingress.yaml
 ingress.networking.k8s.io "app-1-ingress" deleted
 
-$ kubectl delete -f ./config-files/app-1-configs/app-1-svc.yaml
+$ kubectl delete -f app-1-svc.yaml
 service "app-1-svc" deleted
 
-$ kubectl delete -f ./config-files/app-1-configs/app-1-dep.yaml
+$ kubectl delete -f app-1-dep.yaml
 deployment.apps "app-1" deleted
 ```
 
+> Note: All resources were created and destroyed based on the resources role/dependencies
